@@ -144,8 +144,8 @@ for(var i=0; i < 64; i++){
 				    }
 			    }
 			    if(possible == false){
-				  turn = turn == "white" ? "black": "white";
-				  secondturn = false;
+				  //turn = turn == "white" ? "black": "white";
+				  //secondturn = false;
 			    }
 			}
 				    
