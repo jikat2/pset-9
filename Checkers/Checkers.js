@@ -105,19 +105,19 @@ for(var i=0; i < 64; i++){
 			}
 			if(oldSquare.id == currentSquare.id - 18){
 				document.getElementById(currentSquare.id - 9).innerHTML = "";
-				secondturn = true;
+				//secondturn = true;
 			}
 			if(oldSquare.id == currentSquare.id - 14){
 				document.getElementById(currentSquare.id - 7).innerHTML = "";
-				secondturn = true;
+				//secondturn = true;
 			}
 			if(oldSquare.id == currentSquare.id - (-18)){
 				document.getElementById(currentSquare.id - (-9)).innerHTML = "";
-				secondturn = true;
+				//secondturn = true;
 			}
 			if(oldSquare.id == currentSquare.id - (-14)){
 				document.getElementById(currentSquare.id - (-7)).innerHTML = "";
-				secondturn = true;
+				//secondturn = true;
 			}
 			currentSquare.innerHTML = oldSquare.innerHTML;
 			oldSquare.innerHTML = "";
@@ -130,9 +130,9 @@ for(var i=0; i < 64; i++){
 					currentSquare.innerHTML = '<div class="blackcircle">K</div>';
 				}
 			}
-			if(secondturn == false){
+			//if(secondturn == false){
 			turn = turn == "white" ? "black": "white";
-			}
+			//}
 			header.textContent = turn;
 			reset();
 		}
