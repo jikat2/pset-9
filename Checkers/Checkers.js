@@ -68,16 +68,16 @@ for(var i=0; i < 64; i++){
 			var moreLef = document.getElementById(currentSquare.id - 18);
 			var moreRigh = document.getElementById(currentSquare.id - 14);
 			console.log(currentSquare.id + 9);
-			if(leftSquare.innerHTML == "" && (leftSquare.id - (leftSquare.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 1){
+			if((!(!leftSquare) && leftSquare.innerHTML == "" && (leftSquare.id - (leftSquare.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 1){
 				leftSquare.style.backgroundColor = "yellow";
 			}
-			else if(leftSquare.innerHTML.includes('<div class="whitecircle">') && moreLeft.innerHTML == "" && (moreLeft.id - (moreLeft.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 2){
+			else if(!(!moreLeft) && leftSquare.innerHTML.includes('<div class="whitecircle">') && moreLeft.innerHTML == "" && (moreLeft.id - (moreLeft.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 2){
 				moreLeft.style.backgroundColor = "yellow";
 			}
-			if(rightSquare.innerHTML == "" && (rightSquare.id - (rightSquare.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 1){
+			if(!(!rightSquare) && rightSquare.innerHTML == "" && (rightSquare.id - (rightSquare.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 1){
 				rightSquare.style.backgroundColor = "yellow";
 			}
-			else if(rightSquare.innerHTML.includes('<div class="whitecircle">') && moreRight.innerHTML == "" && (moreRight.id - (moreRight.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 2){
+			else if(!(!moreRight) && rightSquare.innerHTML.includes('<div class="whitecircle">') && moreRight.innerHTML == "" && (moreRight.id - (moreRight.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 2){
 				moreRight.style.backgroundColor = "yellow";
 			}
 			if(currentSquare.innerHTML.includes('K')){
