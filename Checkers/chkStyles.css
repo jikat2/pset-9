@@ -1,9 +1,111 @@
-body {
-  text-align: center;
-  font-family: "Roboto", monospace;
-  margin-right:auto;
-  margin-left: auto;
+.squire
+{
+ width:60px;
+ height:60px;
+ float:left;
+ font-size: 60px;
+}
+
+div.blackcircle {
+    border: 3px solid black;
+    border-radius: 50%;
+	background-color: black;
+    width: 60px; 
+    height: 60px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	font-size: 45px;
+	color: red;
+ }
+
+ div.whitecircle {
+    border: 3px solid black;
+    border-radius: 50%;
+	background-color: #ffffff;
+    width: 60px; 
+    height: 60px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	color: red;
+	font-size: 45px;
+ }
+ 
+.bigdiv {	
+  text-align: center;	
+  font-family: "Roboto", monospace;	
+  margin-right:auto;	
+  margin-left: auto;	
   width: 396px;
+}
+
+#mainChessBoard
+{
+    width:480px;
+    height:480px;
+    border:1px solid black;
+}
+
+
+h1 {
+  margin: 0 auto;
+  font-family: "Major Mono Display", monospace;
+  font-size: 30px;
+  color: blue;
+}
+
+
+h2 {
+  margin: 0 auto;
+  font-size: 15px;
+  font-weight: lighter;
+  color: red;
+}
+
+h3 {
+  margin: 0 auto;
+  font-weight: lighter;
+  font-size: 20px;
+  text-decoration: underline;
+}
+
+h4 {
+  margin: 0 auto;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.score {
+  display:inline-block;
+  width: 30%;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+
+.wrap {
+  flex-wrap: wrap;
+  height: 396px;
+  width: 396px;
+}
+
+.square {
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  font-size: 130px;
+  height: 130px;
+  width: 130px;
+  line-height: 130px;
+  line-width: 130px;
+  user-select: none;
 }
 
 ul {
@@ -13,7 +115,6 @@ ul {
   overflow: hidden;
   background-color: #333;
 }
-
 li {
   float: left;
   border-right: 1px solid #bbb;
@@ -36,44 +137,35 @@ li a {
 li a:hover {
   background-color: #111;
 }
+.square:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
 
-.active {
-  background-color: #4CAF50;
+#reset-button, #player-toggle, #start-turn {
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  font-size: 21px;
+  line-height: 30px;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  margin-left:auto;
+  margin-right:auto;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 396px;
+  display:inline-block;
 }
 
 
-.checkersB { 
-        width: 400px; 
-        height: 400px; 
-        margin: 1px; 
-        border: 3px solid #F44336; 
-    } 
- 
-    .red, .yellow { 
-        float: left; 
-        width: 50px; 
-        height: 50px; 
-        font-size:40px; 
-        text-align:center; 
-        display: table-cell; 
-        vertical-align:middle; 
-        box-sizing: border-box; 
-    } 
- 
-    .red { 
-        background-color: #F44336; 
-    } 
- 
-    .yellow { 
-        background-color: #FFEB3B; 
-    }
+#reset-button:hover, #player-toggle:hover, #start-turn:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
 
-.disable-select {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Opera and Firefox */
+#buttons{
+
 }
