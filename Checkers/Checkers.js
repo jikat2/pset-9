@@ -105,19 +105,19 @@ for(var i=0; i < 64; i++){
 			}
 			if(oldSquare.id == currentSquare.id - 18){
 				document.getElementById(currentSquare.id - 9).innerHTML = "";
-				//secondturn = true;
+				secondturn = true;
 			}
 			if(oldSquare.id == currentSquare.id - 14){
 				document.getElementById(currentSquare.id - 7).innerHTML = "";
-				//secondturn = true;
+				secondturn = true;
 			}
 			if(oldSquare.id == currentSquare.id - (-18)){
 				document.getElementById(currentSquare.id - (-9)).innerHTML = "";
-				//secondturn = true;
+				secondturn = true;
 			}
 			if(oldSquare.id == currentSquare.id - (-14)){
 				document.getElementById(currentSquare.id - (-7)).innerHTML = "";
-				//secondturn = true;
+				secondturn = true;
 			}
 			currentSquare.innerHTML = oldSquare.innerHTML;
 			oldSquare.innerHTML = "";
@@ -130,9 +130,25 @@ for(var i=0; i < 64; i++){
 					currentSquare.innerHTML = '<div class="blackcircle">K</div>';
 				}
 			}
-			//if(secondturn == false){
+			if(secondturn == false){
 			turn = turn == "white" ? "black": "white";
-			//}
+			}
+			else{
+			    var possible = false;
+			    for(var i = 0; i++; i<64){
+				    document.getElementById(i).click();
+				    for(var i = 0; i++; i<64){
+					    if(document.getElementById(i).style.backgroundColor == "yellow"){
+						    possible = true;
+					    }
+				    }
+			    }
+			    if(possible == false){
+				  turn = turn == "white" ? "black": "white";
+				  secondturn = false;
+			    }
+			}
+				    
 			header.textContent = turn;
 			reset();
 		}
