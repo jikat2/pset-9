@@ -68,7 +68,7 @@ for(var i=0; i < 64; i++){
 			var moreLef = document.getElementById(currentSquare.id - 18);
 			var moreRigh = document.getElementById(currentSquare.id - 14);
 			console.log(currentSquare.id + 9);
-			if((!(!leftSquare) && leftSquare.innerHTML == "" && (leftSquare.id - (leftSquare.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 1){
+			if(!(!leftSquare) && leftSquare.innerHTML == "" && (leftSquare.id - (leftSquare.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 1){
 				leftSquare.style.backgroundColor = "yellow";
 			}
 			else if(!(!moreLeft) && leftSquare.innerHTML.includes('<div class="whitecircle">') && moreLeft.innerHTML == "" && (moreLeft.id - (moreLeft.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 2){
