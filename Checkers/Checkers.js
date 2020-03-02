@@ -266,15 +266,15 @@ function fakeBoardSnapshot(){
 	var snapshot = [];
 	for(var i = 64; i < 128; i++){
 		if(document.getElementById(i).innerHTML.includes('<div class="whitecircle">')){
-			if(document.getElementById(i).includes('K'){
+			if(document.getElementById(i).includes('K')){
 				snapshot.push(i);
 			}
 			else{
 				snapshot.push(i + 64);
 			}
 		}
-		else if(document.getElememtById(i).innerHTML.includes('<div class="blackcircle">'){
-			if(document.getElementById(i).includes('K'){
+		else if(document.getElememtById(i).innerHTML.includes('<div class="blackcircle">')){
+			if(document.getElementById(i).includes('K')){
 				snapshot.push(i + 128);
 			}
 			else{
