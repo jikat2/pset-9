@@ -464,4 +464,27 @@ function max__value(calc_board, computer_moves, limit, alpha, beta){
 	return max;
 }
 
+function search(calc_board, limit) {
+    var alpha = NEG_INFINITY;
+    var beta = INFINITY;
 
+    //get available moves for computer
+    var available_moves = getMoves("black", calc_board);
+
+    //get max value for each available move
+    var max = max_value(calc_board,available_moves,limit,alpha,beta);
+
+    //find all moves that have max-value
+    var best_moves = [];
+    var max_move = null;
+    for(var i=0;i<available_moves.length;i+=2){
+        var next_move = available_moves[i];
+        if (next_move.score == max){
+            max_move = next_move;
+            best_moves.push(next_move, available_moves[i+1]);
+        }
+    }
+
+    //randomize selection, if multiple moves have same max-value
+    return max_move;
+}
