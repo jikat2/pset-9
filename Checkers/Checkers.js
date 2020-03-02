@@ -256,6 +256,35 @@ function move(start, end){
 function computerTurn(){
 	
 }
+function getMoves(player, target_board){
+	var moves = [];
+	for(let i = 0; i < 64; i++){
+		if(document.getElementById(i).innerHTML.includes('<div class="' + player + 'circle">'){
+		   for(let j = 0; j < 64; j++){
+			if(document.getElementById(j).style.backgroundColor == "yellow"){
+				moves.push(i);
+				moves.push(j);
+			}
+		   }
+	         }
+	}
+	var jumps = [];
+	for(let i = 0; i < 64; i++){
+		if(document.getElementById(i).innerHTML.includes('<div class="' + player + 'circle">'){
+		   for(let j = 0; j < 64; j++){
+			if(document.getElementById(j).style.backgroundColor == "yellow" && Math.abs(i - j) > 10){
+				jumps.push(i);
+				jumps.push(j);
+			}
+		   }
+	         }
+	}
+	if(jumps.length > 0){
+		moves = jumps;
+	}
+	return moves;
+}
+
 function evaluate(target_board) {
     var sum = 0;
     var computer_pieces = 0;
