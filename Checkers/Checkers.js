@@ -255,4 +255,4 @@ function reset(){
 		document.getElementById(i).style.backgroundColor = parseInt((i / 8) + i) % 2 == 0 ? '#ababab' : 'white';
 	}
 }
-function
+
