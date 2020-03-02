@@ -247,7 +247,9 @@ for(var i=0; i < 64; i++){
 	}
 }
 }
-
+function computerTurn(){
+	
+}
 function reset(){
 	for(var i=0; i<64; i++){
 		document.getElementById(i).style.backgroundColor = parseInt((i / 8) + i) % 2 == 0 ? '#ababab' : 'white';
