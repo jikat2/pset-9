@@ -255,13 +255,52 @@ function reset(){
 //AI related things
 function fakeBoard(){
 	for (var i=64; i< 128; i++){
-    let dive = document.createElement("div");
+    	let dive = document.createElement("div");
 	dive.id = i;
 	dive.style.display = "none";
 	dive.innnerHTML = '<div class="whitecircle">K</div>';
-    document.getElementById("mainChessBoard").appendChild(dive);
+    	document.getElementById("mainChessBoard").appendChild(dive);
 	}
 }
+function fakeBoardSnapshot(){
+	var snapshot = [];
+	for(var i = 64; i < 128; i++){
+		if(document.getElementById(i).innerHTML.includes('<div class="whitecircle">')){
+			if(document.getElementById(i).includes('K'){
+				snapshot.push(i);
+			}
+			else{
+				snapshot.push(i + 64);
+			}
+		}
+		else if(document.getElememtById(i).innerHTML.includes('<div class="blackcircle">'){
+			if(document.getElementById(i).includes('K'){
+				snapshot.push(i + 128);
+			}
+			else{
+				snapshot.push(i + 192);
+			}
+		}
+	}
+}
+
+function restoreSnapshot(snapshot){
+	for(var i = 0; i < snapshot.length; i++){
+		if(snapshot[i] < 128){
+			document.getElementById(i).innerHTML = '<div class="whitecircle"></div>';
+		}
+		else if(snapshot[i] < 192){
+			document.getElementById(i - 64).innerHTML = '<div class="whitecircle">K</div>';
+		}
+		else if(snapshot[i] < 256){
+			document.getElementById(i - 128).innerHTML = '<div class="blackcircle"></div>';
+		}
+		else{
+			document.getElementById(i - 192).innerHTML = '<div class="blackcircle">K</div>';
+		}
+	}
+}
+	
 function copyBoard(){
 	for (var i = 0; i < 64; i++){
 		document.getElementById(i+64).innerHTML = document.getElementById(i).innerHTML;
@@ -375,16 +414,54 @@ function min__value(calc_board, human_moves, limit, alpha, beta){
 	if(limit <= 0 && !jump_available(human_moves)){
 		return evaluate("h");
 	}
+
 	var min = INFINITY;
 	
 	if(human_moves.length > 0){
 		for(var i = 0; i < human_moves.length; i+-2){
-			copyBoard();
+			restoreSnapshot(calc_board);
 			move(human_moves[i], human_moves[i+1]);
 			var computer_moves = getMoves("black", "h");
+			var max_score = max_value(fakeBoardSnapshot(), computer_moves, limit-1, alpha, beta);
+			if (max_score < min) {
+                		min = max_score;
+            		}
+            		human_moves[i].score = min;
+            		if (min <= alpha) {
+                		break;
+            		}
+            		if (min < beta) {
+                		beta = min;
+            		}
 		}
 	}
+	return min;
 }
 
+function max__value(calc_board, computer_moves, limit, alpha, beta){
+	if(limit <= 0 && !jump_available(computer_moves)){
+		return evaluate("h");
+	}
+	var max = NEG_INFINITY;
+	
+	if(computer_moves.length > 0){
+		for(var i = 0; i < computer_moves.length; i+-2){
+			restoreSnapshot(calc_board);
+			move(computer[i], computer_moves[i+1]);
+			var human_moves = getMoves("white", "h");
+			var min_score = min_value(fakeBoardSnapshot(), human_moves, limit-1, alpha, beta);
+			if (min_score > max) {
+                		max = min_score;
+            		}
+            		if (max >= beta) {
+                		break;
+            		}
+            		if (max > alpha) {
+                		alpha = max;
+            		}
+		}
+	}
+	return max;
+}
 
 
