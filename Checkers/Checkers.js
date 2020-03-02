@@ -363,7 +363,7 @@ function evaluate(target_board) {
 
 function jump_available(moves){
 	var jump = false;
-	for(var i = 0; i < moves.length; i+=2;){
+	for(var i = 0; i < moves.length; i+=2){
 		if(Math.abs(moves[i] - moves[i+1]) > 10){
 			jump = true;
 		}
