@@ -19,6 +19,8 @@ for (var i=0; i< 64; i++){
 setClick();
 setReset();
 setPlayer();
+fakeBoard();
+copyBoard();
 }
 
 function setPlayer(){
@@ -105,7 +107,6 @@ for(var i=0; i < 64; i++){
 			var rightSquar = document.getElementById(currentSquare.id-7);
 			var moreLef = document.getElementById(currentSquare.id - 18);
 			var moreRigh = document.getElementById(currentSquare.id - 14);
-			console.log(currentSquare.id + 9);
 			if(!(!leftSquare) && leftSquare.innerHTML == "" && (leftSquare.id - (leftSquare.id % 8))/8 == (currentSquare.id - (currentSquare.id % 8))/8 + 1){
 				leftSquare.style.backgroundColor = "yellow";
 			}
@@ -235,7 +236,6 @@ for(var i=0; i < 64; i++){
 					computerTurn();
 					turn = turn == "white" ? "black": "white";
 				}
-				
 			}
 			else{
 				header.textContent = win + " wins";
@@ -247,31 +247,51 @@ for(var i=0; i < 64; i++){
 	}
 }
 }
+function reset(){
+	for(var i=0; i<64; i++){
+		document.getElementById(i).style.backgroundColor = parseInt((i / 8) + i) % 2 == 0 ? '#ababab' : 'white';
+	}
+}
+//AI related things
+function fakeBoard(){
+	for (var i=64; i< 128; i++){
+    let dive = document.createElement("div");
+	dive.id = i;
+	dive.style.display = "none";
+	dive.innnerHTML = '<div class="whitecircle">K</div>';
+    document.getElementById("mainChessBoard").appendChild(dive);
+	}
+}
+function copyBoard(){
+	for (var i = 0; i < 64; i++){
+		document.getElementById(i+64).innerHTML = document.getElementById(i).innerHTML;
+    }
+}
 function move(start, end){
-	document.getElementById(start).click();
-	if(document.getElementById(end).style.backgroundColor == "yellow"){
-		document.getElementById(end).click();
-	)
+	document.getElementById(end + 64).innerHTML = document.getElementById(start + 64).innerHTML;
+	document.getElementById(start + 64).innerHTML = "";
 }
 function computerTurn(){
 	
 }
 function getMoves(player, target_board){
 	var moves = [];
-	for(let i = 0; i < 64; i++){
-		if(document.getElementById(i).innerHTML.includes('<div class="' + player + 'circle">'){
-		   for(let j = 0; j < 64; j++){
+	for(let i = 64; i < 128; i++){
+		if(document.getElementById(i).innerHTML.includes('<div class="' + player + 'circle">')){
+		   document.getElementById(i).click();
+		   for(let j = 64; j < 128; j++){
 			if(document.getElementById(j).style.backgroundColor == "yellow"){
 				moves.push(i);
 				moves.push(j);
 			}
 		   }
-	         }
+	    }
+		reset();
 	}
 	var jumps = [];
-	for(let i = 0; i < 64; i++){
-		if(document.getElementById(i).innerHTML.includes('<div class="' + player + 'circle">'){
-		   for(let j = 0; j < 64; j++){
+	for(let i = 64; i < 128; i++){
+		if(document.getElementById(i).innerHTML.includes('<div class="' + player + 'circle">')){
+		   for(let j = 64; j < 128; j++){
 			if(document.getElementById(j).style.backgroundColor == "yellow" && Math.abs(i - j) > 10){
 				jumps.push(i);
 				jumps.push(j);
@@ -295,22 +315,22 @@ function evaluate(target_board) {
     var human_pos_sum = 0;
 
     //log("************* UTILITY *****************")
-    for (var i=0; i < 64; i++) {
-	    if (document.getElementById(i).innerHTML.includes('<div class="whitecircle">') { // human
+    for (var i=64; i < 128; i++) {
+	    if (document.getElementById(i).innerHTML.includes('<div class="whitecircle">')) { // human
 	         human_pieces += 1;
 	         if (document.getElementById(i).innerHTML.includes("K")){
 	             human_kings += 1;
 	         }
 	         human_pos_sum += 3;
 	    }
-	     else if(document.getElementById(i).innerHTML.includes('<div class="blackcircle">'){ // computer
+	     else if(document.getElementById(i).innerHTML.includes('<div class="blackcircle">')){ // computer
 	         computer_pieces += 1;
 	         if (document.getElementById(i).innerHTML.includes("K")){
 	             computer_kings += 1;
 	         }
 	         computer_pos_sum += 3;
 	     }
-    	}
+   
     }
 
     var piece_difference = computer_pieces - human_pieces;
@@ -341,9 +361,30 @@ function evaluate(target_board) {
     return position;
 }
 
-function reset(){
-	for(var i=0; i<64; i++){
-		document.getElementById(i).style.backgroundColor = parseInt((i / 8) + i) % 2 == 0 ? '#ababab' : 'white';
+function jump_available(moves){
+	var jump = false;
+	for(var i = 0; i < moves.length; i+=2;){
+		if(Math.abs(moves[i] - moves[i+1]) > 10){
+			jump = true;
+		}
+	}
+	return jump;
+}
+
+function min__value(calc_board, human_moves, limit, alpha, beta){
+	if(limit <= 0 && !jump_available(human_moves)){
+		return evaluate("h");
+	}
+	var min = INFINITY;
+	
+	if(human_moves.length > 0){
+		for(var i = 0; i < human_moves.length; i+-2){
+			copyBoard();
+			move(human_moves[i], human_moves[i+1]);
+			var computer_moves = getMoves("black", "h");
+		}
 	}
 }
+
+
 
