@@ -247,9 +247,71 @@ for(var i=0; i < 64; i++){
 	}
 }
 }
+function move(start, end){
+	document.getElementById(start).click();
+	if(document.getElementById(end).style.backgroundColor == "yellow"){
+		document.getElementById(end).click();
+	)
+}
 function computerTurn(){
 	
 }
+function evaluate(target_board) {
+    var sum = 0;
+    var computer_pieces = 0;
+    var computer_kings = 0;
+    var human_pieces = 0;
+    var human_kings = 0;
+    var computer_pos_sum = 0;
+    var human_pos_sum = 0;
+
+    //log("************* UTILITY *****************")
+    for (var i=0; i < 64; i++) {
+	    if (document.getElementById(i).innerHTML.includes('<div class="whitecircle">') { // human
+	         human_pieces += 1;
+	         if (document.getElementById(i).innerHTML.includes("K")){
+	             human_kings += 1;
+	         }
+	         human_pos_sum += 3;
+	    }
+	     else if(document.getElementById(i).innerHTML.includes('<div class="blackcircle">'){ // computer
+	         computer_pieces += 1;
+	         if (document.getElementById(i).innerHTML.includes("K")){
+	             computer_kings += 1;
+	         }
+	         computer_pos_sum += 3;
+	     }
+    	}
+    }
+
+    var piece_difference = computer_pieces - human_pieces;
+    var king_difference = computer_kings - human_kings;
+    if (human_pieces === 0){
+        human_pieces = 0.00001;
+    }
+    var avg_human_pos = human_pos_sum / human_pieces;
+    if (computer_pieces === 0) {
+        computer_pieces = 0.00001;
+    }
+    var avg_computer_pos = computer_pos_sum / computer_pieces;
+    var avg_pos_diff = avg_computer_pos - avg_human_pos;
+
+    var features = [piece_difference, king_difference, avg_pos_diff];
+    var weights = [100, 10, 1];
+
+    var position = 0;
+
+    for (var f=0; f < features.length; f++){
+        var weight = features[f] * weights[f];
+        position += weight;
+    }
+
+    //log("utility=" + board_utility);
+    //log("************* END  UTILITY ************")
+
+    return position;
+}
+
 function reset(){
 	for(var i=0; i<64; i++){
 		document.getElementById(i).style.backgroundColor = parseInt((i / 8) + i) % 2 == 0 ? '#ababab' : 'white';
