@@ -1,3 +1,17 @@
+*{
+	padding: 0;
+	margin: 0;
+	
+}
+
+body {
+  text-align: center;
+  font-family: "Roboto", monospace;
+  margin-right:auto;
+  margin-left: auto;
+  width: 396px;
+}
+
 .squire
 {
  width:60px;
@@ -109,6 +123,7 @@ h4 {
 }
 
 ul {
+  width: 355px;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -166,6 +181,6 @@ li a:hover {
   cursor: pointer;
 }
 
-#buttons{
-
+.active {
+  background-color: #4CAF50;
 }
