@@ -311,7 +311,10 @@ function move(start, end){
 	document.getElementById(start + 64).innerHTML = "";
 }
 function computerTurn(){
-	
+	copyBoard();
+	var selected_move = search(fakeBoardSnapshot(), 8);
+	document.getElementById(selected_move[0]).click();
+	document.getElementById(selected_move[1]).click();
 }
 function getMoves(player, target_board){
 	var moves = [];
@@ -467,7 +470,7 @@ function max__value(calc_board, computer_moves, limit, alpha, beta){
 function search(calc_board, limit) {
     var alpha = NEG_INFINITY;
     var beta = INFINITY;
-
+    restoreSnapshot(calc_board);
     //get available moves for computer
     var available_moves = getMoves("black", calc_board);
 
@@ -486,5 +489,5 @@ function search(calc_board, limit) {
     }
 
     //randomize selection, if multiple moves have same max-value
-    return max_move;
+    return best_moves;
 }
