@@ -16,11 +16,11 @@ for (var i=0; i< 64; i++){
 	dive.innerHTML = parseInt((i / 8) + i) % 2 == 0 && (i < 24) ? '<div class="blackcircle"></div>' : (parseInt((i / 8) + i) % 2 == 0 && (i > 40) ? '<div class="whitecircle"></div>' : '');
     document.getElementById("mainChessBoard").appendChild(dive);
 }
+fakeBoard();
+copyBoard();
 setClick();
 setReset();
 setPlayer();
-fakeBoard();
-copyBoard();
 }
 
 function setPlayer(){
@@ -55,7 +55,7 @@ function setReset(){
 	}
 }
 function setClick(){
-for(var i=0; i < 64; i++){
+for(var i=0; i < 128; i++){
 	let currentSquare = document.getElementById(i.toString());
 	currentSquare.onclick = function(){
 		if((closede == false || currentSquare.id == currentid || currentSquare.style.backgroundColor == "yellow") && !win){
@@ -137,7 +137,7 @@ for(var i=0; i < 64; i++){
 		}
 		if(currentSquare.innerHTML == "" && currentSquare.style.backgroundColor == "yellow"){
 			var oldSquare = "";
-			for(var i = 0; i < 64; i++){
+			for(var i = 0; i < 128; i++){
 				if(document.getElementById(i.toString()).style.backgroundColor == "red"){
 					oldSquare = document.getElementById(i.toString());
 				}
@@ -180,7 +180,6 @@ for(var i=0; i < 64; i++){
 				win = "No one";
 			}
 			if(currentSquare.id - currentSquare.id % 8 == 0 || currentSquare.id - currentSquare.id % 8 == 56){
-				console.log("hey");
 				if(currentSquare.innerHTML.includes('<div class="whitecircle">')){
 					currentSquare.innerHTML = '<div class="whitecircle">K</div>';
 				}
@@ -191,7 +190,7 @@ for(var i=0; i < 64; i++){
 			let movementSquare = -1;
 			if(secondturn == true){
 				currentSquare.click();
-				for(let i = 0; i < 64; i++){
+				for(let i = 0; i < 128; i++){
 					if(document.getElementById(i).style.backgroundColor == "yellow" && Math.abs(currentSquare.id - i) > 10){
 						movementSquare = i;
 					}
@@ -248,7 +247,7 @@ for(var i=0; i < 64; i++){
 }
 }
 function reset(){
-	for(var i=0; i<64; i++){
+	for(var i=0; i<128; i++){
 		document.getElementById(i).style.backgroundColor = parseInt((i / 8) + i) % 2 == 0 ? '#ababab' : 'white';
 	}
 }
@@ -266,15 +265,15 @@ function fakeBoardSnapshot(){
 	var snapshot = [];
 	for(var i = 64; i < 128; i++){
 		if(document.getElementById(i).innerHTML.includes('<div class="whitecircle">')){
-			if(document.getElementById(i).includes('K')){
+			if(document.getElementById(i).innerHTML.includes('K')){
 				snapshot.push(i);
 			}
 			else{
 				snapshot.push(i + 64);
 			}
 		}
-		else if(document.getElememtById(i).innerHTML.includes('<div class="blackcircle">')){
-			if(document.getElementById(i).includes('K')){
+		else if(document.getElementById(i).innerHTML.includes('<div class="blackcircle">')){
+			if(document.getElementById(i).innerHTML.includes('K')){
 				snapshot.push(i + 128);
 			}
 			else{
@@ -282,21 +281,22 @@ function fakeBoardSnapshot(){
 			}
 		}
 	}
+	return snapshot;
 }
 
 function restoreSnapshot(snapshot){
 	for(var i = 0; i < snapshot.length; i++){
 		if(snapshot[i] < 128){
-			document.getElementById(i).innerHTML = '<div class="whitecircle"></div>';
+			document.getElementById(snapshot[i]).innerHTML = '<div class="whitecircle">K</div>';
 		}
 		else if(snapshot[i] < 192){
-			document.getElementById(i - 64).innerHTML = '<div class="whitecircle">K</div>';
+			document.getElementById(snapshot[i] - 64).innerHTML = '<div class="whitecircle"></div>';
 		}
 		else if(snapshot[i] < 256){
-			document.getElementById(i - 128).innerHTML = '<div class="blackcircle"></div>';
+			document.getElementById(snapshot[i] - 128).innerHTML = '<div class="blackcircle">K</div>';
 		}
 		else{
-			document.getElementById(i - 192).innerHTML = '<div class="blackcircle">K</div>';
+			document.getElementById(snapshot[i] - 192).innerHTML = '<div class="blackcircle"></div>';
 		}
 	}
 }
@@ -307,8 +307,8 @@ function copyBoard(){
     }
 }
 function move(start, end){
-	document.getElementById(end + 64).innerHTML = document.getElementById(start + 64).innerHTML;
-	document.getElementById(start + 64).innerHTML = "";
+	document.getElementById(end).innerHTML = document.getElementById(start).innerHTML;
+	document.getElementById(start).innerHTML = "";
 }
 function computerTurn(){
 	copyBoard();
@@ -318,9 +318,18 @@ function computerTurn(){
 }
 function getMoves(player, target_board){
 	var moves = [];
+	var change = false;
+	var curturn = turn;
 	for(let i = 64; i < 128; i++){
 		if(document.getElementById(i).innerHTML.includes('<div class="' + player + 'circle">')){
+		   if(turn != player){
+			   turn = player;
+			   change = true;
+		   }
 		   document.getElementById(i).click();
+		   if(change == true){
+			   turn = curturn;
+		   }
 		   for(let j = 64; j < 128; j++){
 			if(document.getElementById(j).style.backgroundColor == "yellow"){
 				moves.push(i);
@@ -333,13 +342,15 @@ function getMoves(player, target_board){
 	var jumps = [];
 	for(let i = 64; i < 128; i++){
 		if(document.getElementById(i).innerHTML.includes('<div class="' + player + 'circle">')){
+		   document.getElementById(i).click();
 		   for(let j = 64; j < 128; j++){
 			if(document.getElementById(j).style.backgroundColor == "yellow" && Math.abs(i - j) > 10){
 				jumps.push(i);
 				jumps.push(j);
 			}
 		   }
-	         }
+	    }
+		reset();
 	}
 	if(jumps.length > 0){
 		moves = jumps;
@@ -413,78 +424,97 @@ function jump_available(moves){
 	return jump;
 }
 
-function min__value(calc_board, human_moves, limit, alpha, beta){
+function min_value(calc_board, human_moves, limit, alpha, beta){
 	if(limit <= 0 && !jump_available(human_moves)){
 		return evaluate("h");
 	}
 
-	var min = INFINITY;
+	var min = 10000000000000000000000;
 	
 	if(human_moves.length > 0){
-		for(var i = 0; i < human_moves.length; i+-2){
+		for(var i = 0; i < human_moves.length; i+=2){
 			restoreSnapshot(calc_board);
 			move(human_moves[i], human_moves[i+1]);
 			var computer_moves = getMoves("black", "h");
 			var max_score = max_value(fakeBoardSnapshot(), computer_moves, limit-1, alpha, beta);
-			if (max_score < min) {
-                		min = max_score;
-            		}
-            		human_moves[i].score = min;
-            		if (min <= alpha) {
-                		break;
-            		}
-            		if (min < beta) {
-                		beta = min;
-            		}
+		    if (max_score < min) {
+                min = max_score;
+            }
+            human_moves[i].score = min;
+            if (min <= alpha) {
+                break;
+            }
+            if (min < beta) {
+                beta = min;
+            }
 		}
 	}
+	else {
+      if( win != ""){
+        if (win == "white"){
+             return -100000;
+        }
+		else return 100000;
+      }                                                                                                                                                                  
+    }
 	return min;
 }
 
-function max__value(calc_board, computer_moves, limit, alpha, beta){
+function max_value(calc_board, computer_moves, limit, alpha, beta){
+	console.log(calc_board);
 	if(limit <= 0 && !jump_available(computer_moves)){
 		return evaluate("h");
 	}
-	var max = NEG_INFINITY;
+	var max = -100000000000000000;
 	
 	if(computer_moves.length > 0){
-		for(var i = 0; i < computer_moves.length; i+-2){
+		for(var i = 0; i < computer_moves.length; i+=2){
 			restoreSnapshot(calc_board);
-			move(computer[i], computer_moves[i+1]);
+			move(computer_moves[i], computer_moves[i+1]);
 			var human_moves = getMoves("white", "h");
 			var min_score = min_value(fakeBoardSnapshot(), human_moves, limit-1, alpha, beta);
+			computer_moves[i].score = min_score;
 			if (min_score > max) {
-                		max = min_score;
-            		}
-            		if (max >= beta) {
-                		break;
-            		}
-            		if (max > alpha) {
-                		alpha = max;
-            		}
+                max = min_score;
+            }
+            if (max >= beta) {
+                break;
+            }
+            if (max > alpha) {
+                alpha = max;
+            }
 		}
 	}
+	else {
+      if( win != ""){
+        if (win == "white"){
+             return -100000;
+        }
+		else return 100000;
+      }
+    }
+	
 	return max;
 }
 
 function search(calc_board, limit) {
-    var alpha = NEG_INFINITY;
-    var beta = INFINITY;
+    var alpha = Number.NEGATIVE_INFINITY;
+    var beta = Number.INFINITY;
     restoreSnapshot(calc_board);
     //get available moves for computer
     var available_moves = getMoves("black", calc_board);
-
     //get max value for each available move
     var max = max_value(calc_board,available_moves,limit,alpha,beta);
-
     //find all moves that have max-value
     var best_moves = [];
     var max_move = null;
+	console.log(available_moves);  
     for(var i=0;i<available_moves.length;i+=2){
         var next_move = available_moves[i];
         if (next_move.score == max){
             max_move = next_move;
-            best_moves.push(next_move, available_moves[i+1]);
+            best_moves.push(next_move);
+			best_moves.push(available_moves[i+1]);
         }
     }
 
