@@ -254,7 +254,7 @@ function reset(){
 //AI related things
 function fakeBoard(){
 	for (var i=64; i< 128; i++){
-    	let dive = document.createElement("div");
+    let dive = document.createElement("div");
 	dive.id = i;
 	dive.style.display = "none";
 	dive.innnerHTML = '<div class="whitecircle">K</div>';
@@ -269,6 +269,9 @@ function fakeBoardSnapshot(){
 				snapshot.push(i);
 			}
 			else{
+				if(i == 66){
+					console.log(document.getElementById(i).innerHTML);
+				}
 				snapshot.push(i + 64);
 			}
 		}
@@ -285,6 +288,7 @@ function fakeBoardSnapshot(){
 }
 
 function restoreSnapshot(snapshot){
+	console.log(snapshot);
 	for(var i = 0; i < snapshot.length; i++){
 		if(snapshot[i] < 128){
 			document.getElementById(snapshot[i]).innerHTML = '<div class="whitecircle">K</div>';
@@ -299,6 +303,10 @@ function restoreSnapshot(snapshot){
 			document.getElementById(snapshot[i] - 192).innerHTML = '<div class="blackcircle"></div>';
 		}
 	}
+	console.log(fakeBoardSnapshot());
+	/*if(fakeBoardSnapshot() != snapshot){
+		console.log("bad");
+	}*/
 }
 	
 function copyBoard(){
@@ -307,6 +315,21 @@ function copyBoard(){
     }
 }
 function move(start, end){
+	var oldSquar = document.getElementById(start);
+	var currentSquar = document.getElementById(end);
+	if(oldSquar.id == currentSquar.id - 18){
+		document.getElementById(currentSquar.id - 9).innerHTML = "";
+	}
+	if(oldSquar.id == currentSquar.id - 14){
+		document.getElementById(currentSquar.id - 7).innerHTML = "";
+	}
+	if(oldSquar.id == currentSquar.id - (-18)){
+		document.getElementById(currentSquar.id - (-9)).innerHTML = "";
+	}
+	if(oldSquar.id == currentSquar.id - (-14)){
+		document.getElementById(currentSquar.id - (-7)).innerHTML = "";
+	}
+
 	document.getElementById(end).innerHTML = document.getElementById(start).innerHTML;
 	document.getElementById(start).innerHTML = "";
 }
@@ -461,7 +484,6 @@ function min_value(calc_board, human_moves, limit, alpha, beta){
 }
 
 function max_value(calc_board, computer_moves, limit, alpha, beta){
-	console.log(calc_board);
 	if(limit <= 0 && !jump_available(computer_moves)){
 		return evaluate("h");
 	}
