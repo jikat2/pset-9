@@ -258,7 +258,7 @@ function fakeBoard(){
 	dive.id = i;
 	dive.style.display = "none";
 	dive.innnerHTML = '<div class="whitecircle">K</div>';
-    	document.getElementById("mainChessBoard").appendChild(dive);
+    document.getElementById("mainChessBoard").appendChild(dive);
 	}
 }
 function fakeBoardSnapshot(){
@@ -269,9 +269,6 @@ function fakeBoardSnapshot(){
 				snapshot.push(i);
 			}
 			else{
-				if(i == 66){
-					console.log(document.getElementById(i).innerHTML);
-				}
 				snapshot.push(i + 64);
 			}
 		}
@@ -288,7 +285,10 @@ function fakeBoardSnapshot(){
 }
 
 function restoreSnapshot(snapshot){
-	console.log(snapshot);
+
+	for(var i = 64; i < 128; i++){
+		document.getElementById(i).innerHTML = "";
+	}
 	for(var i = 0; i < snapshot.length; i++){
 		if(snapshot[i] < 128){
 			document.getElementById(snapshot[i]).innerHTML = '<div class="whitecircle">K</div>';
@@ -303,7 +303,7 @@ function restoreSnapshot(snapshot){
 			document.getElementById(snapshot[i] - 192).innerHTML = '<div class="blackcircle"></div>';
 		}
 	}
-	console.log(fakeBoardSnapshot());
+
 	/*if(fakeBoardSnapshot() != snapshot){
 		console.log("bad");
 	}*/
@@ -335,7 +335,8 @@ function move(start, end){
 }
 function computerTurn(){
 	copyBoard();
-	var selected_move = search(fakeBoardSnapshot(), 8);
+	var selected_move = search(fakeBoardSnapshot(), 6);
+	console.log(selected_move);
 	document.getElementById(selected_move[0]).click();
 	document.getElementById(selected_move[1]).click();
 }
@@ -448,7 +449,7 @@ function jump_available(moves){
 }
 
 function min_value(calc_board, human_moves, limit, alpha, beta){
-	if(limit <= 0 && !jump_available(human_moves)){
+	if(limit <= 0){// && !jump_available(human_moves)){
 		return evaluate("h");
 	}
 
@@ -484,7 +485,7 @@ function min_value(calc_board, human_moves, limit, alpha, beta){
 }
 
 function max_value(calc_board, computer_moves, limit, alpha, beta){
-	if(limit <= 0 && !jump_available(computer_moves)){
+	if(limit <= 0){ // && !jump_available(computer_moves)){
 		return evaluate("h");
 	}
 	var max = -100000000000000000;
@@ -515,7 +516,12 @@ function max_value(calc_board, computer_moves, limit, alpha, beta){
 		else return 100000;
       }
     }
-	
+	if(limit == 6){
+		console.log(computer_moves);
+		for(var i = 0; i < computer_moves.length; i+=2){
+			console.log(computer_moves[i].score);
+		}
+	}
 	return max;
 }
 
@@ -530,6 +536,7 @@ function search(calc_board, limit) {
     //find all moves that have max-value
     var best_moves = [];
     var max_move = null;
+	console.log(max);
 	console.log(available_moves);  
     for(var i=0;i<available_moves.length;i+=2){
         var next_move = available_moves[i];
