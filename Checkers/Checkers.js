@@ -337,8 +337,8 @@ function computerTurn(){
 	copyBoard();
 	var selected_move = search(fakeBoardSnapshot(), 6);
 	console.log(selected_move);
-	document.getElementById(selected_move[0]).click();
-	document.getElementById(selected_move[1]).click();
+	document.getElementById(selected_move[0][0]).click();
+	document.getElementById(selected_move[0][1]).click();
 }
 function getMoves(player, target_board){
 	var moves = [];
@@ -356,8 +356,7 @@ function getMoves(player, target_board){
 		   }
 		   for(let j = 64; j < 128; j++){
 			if(document.getElementById(j).style.backgroundColor == "yellow"){
-				moves.push(i);
-				moves.push(j);
+				moves.push([i, j]);
 			}
 		   }
 	    }
@@ -369,8 +368,7 @@ function getMoves(player, target_board){
 		   document.getElementById(i).click();
 		   for(let j = 64; j < 128; j++){
 			if(document.getElementById(j).style.backgroundColor == "yellow" && Math.abs(i - j) > 10){
-				jumps.push(i);
-				jumps.push(j);
+				jumps.push([i, j]);
 			}
 		   }
 	    }
@@ -440,8 +438,8 @@ function evaluate(target_board) {
 
 function jump_available(moves){
 	var jump = false;
-	for(var i = 0; i < moves.length; i+=2){
-		if(Math.abs(moves[i] - moves[i+1]) > 10){
+	for(var i = 0; i < moves.length; i++){
+		if(Math.abs(moves[i][0] - moves[i][1]) > 10){
 			jump = true;
 		}
 	}
@@ -456,9 +454,9 @@ function min_value(calc_board, human_moves, limit, alpha, beta){
 	var min = 10000000000000000000000;
 	
 	if(human_moves.length > 0){
-		for(var i = 0; i < human_moves.length; i+=2){
+		for(var i = 0; i < human_moves.length; i++){
 			restoreSnapshot(calc_board);
-			move(human_moves[i], human_moves[i+1]);
+			move(human_moves[i][0], human_moves[i][1]);
 			var computer_moves = getMoves("black", "h");
 			var max_score = max_value(fakeBoardSnapshot(), computer_moves, limit-1, alpha, beta);
 		    if (max_score < min) {
@@ -491,9 +489,9 @@ function max_value(calc_board, computer_moves, limit, alpha, beta){
 	var max = -100000000000000000;
 	
 	if(computer_moves.length > 0){
-		for(var i = 0; i < computer_moves.length; i+=2){
+		for(var i = 0; i < computer_moves.length; i++){
 			restoreSnapshot(calc_board);
-			move(computer_moves[i], computer_moves[i+1]);
+			move(computer_moves[i][0], computer_moves[i][1]);
 			var human_moves = getMoves("white", "h");
 			var min_score = min_value(fakeBoardSnapshot(), human_moves, limit-1, alpha, beta);
 			computer_moves[i].score = min_score;
@@ -518,7 +516,7 @@ function max_value(calc_board, computer_moves, limit, alpha, beta){
     }
 	if(limit == 6){
 		console.log(computer_moves);
-		for(var i = 0; i < computer_moves.length; i+=2){
+		for(var i = 0; i < computer_moves.length; i++){
 			console.log(computer_moves[i].score);
 		}
 	}
@@ -536,14 +534,13 @@ function search(calc_board, limit) {
     //find all moves that have max-value
     var best_moves = [];
     var max_move = null;
-	console.log(max);
-	console.log(available_moves);  
-    for(var i=0;i<available_moves.length;i+=2){
+    console.log(max);
+    console.log(available_moves);  
+    for(var i=0;i<available_moves.length;i++){
         var next_move = available_moves[i];
         if (next_move.score == max){
             max_move = next_move;
             best_moves.push(next_move);
-			best_moves.push(available_moves[i+1]);
         }
     }
 
