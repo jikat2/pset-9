@@ -337,8 +337,8 @@ function computerTurn(){
 	copyBoard();
 	var selected_move = search(fakeBoardSnapshot(), 6);
 	console.log(selected_move);
-	document.getElementById(selected_move[0][0]).click();
-	document.getElementById(selected_move[0][1]).click();
+	document.getElementById(selected_move[0][0] - 64).click();
+	document.getElementById(selected_move[0][1] - 64).click();
 }
 function getMoves(player, target_board){
 	var moves = [];
